@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -34,14 +34,14 @@ const Stories = () => {
       location: "Thornhollow",
       content: [
         "The mist hung low over Thornhollow as we approached. What was once a thriving village at the edge of the Ziona Marches now stood silent, shrouded in an unnatural fog that seemed to devour sound itself.",
-        ""Something's wrong," Lirien whispered, her elven eyes narrowing. The Vein—that current of magic that flowed through all things—felt twisted here, corrupted.",
+        "\"Something's wrong,\" Lirien whispered, her elven eyes narrowing. The Vein—that current of magic that flowed through all things—felt twisted here, corrupted.",
         "I felt for the familiar weight of my spellglass dagger. The enchanted crystal hummed against my palm, resonating with whatever malevolent force awaited us in the village square.",
         "We moved through empty streets, past abandoned market stalls and homes with doors left ajar. No birds sang. No children laughed. Only the occasional creak of a swinging sign broke the eerie silence.",
-        ""The people," Rakash growled, his voice unusually soft for an Ashen warrior, "where are they all?"",
+        "\"The people,\" Rakash growled, his voice unusually soft for an Ashen warrior, \"where are they all?\"",
         "The answer came as we reached the square. Dozens of villagers stood motionless, their eyes vacant, arranged in concentric circles around a hooded figure. Before them lay a strange apparatus—a spellglass orb mounted on a tripod of blackened metal.",
-        ""At last," the figure said without turning, "the Wayfinder arrives with his companions." The voice was familiar, cultured, with the clipped accent of Vel'Astra's upper circles.",
-        ""Magistrate Thorne," I replied, gripping my dagger tighter. "Release these people. Your quarrel is with me."",
-        "He turned then, revealing a face half-hidden behind an ornate mask of silver and spellglass. "My quarrel extends to all who would resist the Empire's rightful control of magic. These simple folk will serve as an excellent demonstration of the consequences of defiance."",
+        "\"At last,\" the figure said without turning, \"the Wayfinder arrives with his companions.\" The voice was familiar, cultured, with the clipped accent of Vel'Astra's upper circles.",
+        "\"Magistrate Thorne,\" I replied, gripping my dagger tighter. \"Release these people. Your quarrel is with me.\"",
+        "He turned then, revealing a face half-hidden behind an ornate mask of silver and spellglass. \"My quarrel extends to all who would resist the Empire's rightful control of magic. These simple folk will serve as an excellent demonstration of the consequences of defiance.\"",
         "The orb began to pulse with sickly green light. I could feel the Vein being pulled, twisted toward the device. The villagers' vacant expressions contorted in silent pain.",
         "What happened next occurred in heartbeats. Lirien summoned roots from beneath the cobblestones to grasp at Thorne's legs. Rakash hurled a ball of concentrated flame at the orb. And I charged forward, spellglass dagger raised.",
         "The battle for Thornhollow had begun, and with it, perhaps, the first skirmish in a larger war for the future of magic in Elarion."
@@ -74,7 +74,7 @@ const Stories = () => {
         "We left before the ceremony concluded, our presence already a risk. But I carry the memory of those young mages, their faces radiant with pride as they surrendered something precious without fully understanding the cost."
       ],
       type: 'journal',
-      tags: ['Ceremony', 'Imperial Magic', 'Vel\'Astra']
+      tags: ['Ceremony', 'Imperial Magic', "Vel'Astra"]
     },
     {
       id: "ancient-legend",
