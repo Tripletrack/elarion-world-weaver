@@ -17,68 +17,60 @@ const Map = () => {
   
   const locations: Location[] = [
     {
-      id: "velastra",
-      name: "Vel'Astra",
-      type: "city",
-      region: "Velharian Empire",
-      coordinates: { x: 55, y: 40 },
-      description: "The imperial capital, home to the Golden Throne and the Imperial Arcane Academy. Its white spires and golden domes can be seen from miles away."
+      id: "velathian-empire",
+      name: "Velathian Empire",
+      type: "region",
+      region: "Central Continent",
+      coordinates: { x: 45, y: 35 },
+      description: "The dominant imperial force, ruled from the Golden Throne. A land of fertile valleys, dense forests, and magical academies."
     },
     {
-      id: "portlumina",
-      name: "Port Lumina",
-      type: "city",
-      region: "Velharian Empire",
-      coordinates: { x: 32, y: 52 },
-      description: "Major trading port with the largest spellglass market in Elarion. Ships from across the Sapphire Seas dock at its enchanted harbors."
+      id: "ashen-reach",
+      name: "Ashen Reach",
+      type: "region",
+      region: "Eastern Continent",
+      coordinates: { x: 75, y: 30 },
+      description: "Volcanic badlands inhabited by fire elementalists and obsidian miners, resistant to imperial control. Known for its harsh terrain and hardy people."
+    },
+    {
+      id: "ashen-reach-south",
+      name: "Ashen Reach",
+      type: "region",
+      region: "Southern Continent",
+      coordinates: { x: 70, y: 70 },
+      description: "The southern extension of the Ashen Reach, separated by water but sharing the same volcanic origins and fiery traditions."
     },
     {
       id: "thornhollow",
       name: "Thornhollow",
       type: "city",
-      region: "Ziona Marches",
-      coordinates: { x: 70, y: 58 },
-      description: "Border town between the Empire and the deep forest. Known for its unique architecture that incorporates living trees."
+      region: "Central Continent",
+      coordinates: { x: 50, y: 58 },
+      description: "Border town between the Empire and the wilds. Known for its unique architecture that incorporates living trees and serves as a trading post."
     },
     {
-      id: "embercrag",
-      name: "Embercrag",
+      id: "maalotport",
+      name: "Ma'alotport",
       type: "city",
-      region: "Ashen Reach",
-      coordinates: { x: 80, y: 30 },
-      description: "Main settlement of the Ashen Reach, built into the side of a dormant volcano. Famous for its fire-forged weaponry."
+      region: "Western Coast",
+      coordinates: { x: 18, y: 43 },
+      description: "Major trading port with ships from across the Sapphire Seas docking at its harbors. Known for its diverse population and maritime culture."
     },
     {
-      id: "blasted",
-      name: "Blasted Expanse",
-      type: "region",
-      region: "Forbidden Zone",
-      coordinates: { x: 60, y: 20 },
-      description: "A vast area of corrupted magic created during the Mage Wars. Reality itself is unstable here, and strange creatures roam the twisted landscape."
+      id: "caldera",
+      name: "Caldera",
+      type: "city",
+      region: "Southern Islands",
+      coordinates: { x: 40, y: 75 },
+      description: "A settlement built within an ancient volcanic caldera. Protected by natural walls, it's known for its unique circular layout and defensive position."
     },
     {
-      id: "mistwatch",
-      name: "Mistwatch",
+      id: "cradle-of-tide",
+      name: "Cradle of Tide",
       type: "landmark",
-      region: "Ziona Marches",
-      coordinates: { x: 75, y: 70 },
-      description: "Outpost at the edge of the Shifting Mists, a zone of unpredictable wild magic. Serves as a warning post for travelers."
-    },
-    {
-      id: "sapphire",
-      name: "Sapphire Seas",
-      type: "region",
-      region: "Oceanic Territory",
-      coordinates: { x: 20, y: 70 },
-      description: "Vast waters known for their unusual blue hue, caused by trace amounts of dissolved spellglass. Home to the Crimson Sails pirate fleet."
-    },
-    {
-      id: "crystalholm",
-      name: "Crystalholm",
-      type: "city",
-      region: "Velharian Empire",
-      coordinates: { x: 40, y: 30 },
-      description: "Mining city known for rare magical crystals and ores. The entire settlement glows with an ethereal light at night."
+      region: "Western Coast",
+      coordinates: { x: 15, y: 65 },
+      description: "A sacred site where the ocean meets the land in a perfect crescent bay. Believed to be the birthplace of sea magic and revered by coastal communities."
     }
   ];
   
@@ -113,7 +105,7 @@ const Map = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3">
             <div className="fantasy-card p-4 h-[600px] relative">
-              <div className="absolute inset-0 bg-[url('/elarion-map.jpg')] bg-cover bg-center rounded-md"></div>
+              <div className="absolute inset-0 bg-[url('/lovable-uploads/e6c9c685-eeeb-49c7-899b-38175daee795.png')] bg-cover bg-center rounded-md"></div>
               
               {/* Map Locations */}
               {locations.map((location) => (
