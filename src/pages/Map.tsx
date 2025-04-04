@@ -105,7 +105,9 @@ const Map = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3">
             <div className="fantasy-card p-4 h-[600px] relative">
-              <div className="absolute inset-0 bg-[url('/lovable-uploads/e6c9c685-eeeb-49c7-899b-38175daee795.png')] bg-cover bg-center rounded-md"></div>
+              <div className="absolute inset-0 bg-cover bg-center rounded-md"
+                   style={{ backgroundImage: "url('/elarion-map.jpg')" }}>
+              </div>
               
               {/* Map Locations */}
               {locations.map((location) => (
