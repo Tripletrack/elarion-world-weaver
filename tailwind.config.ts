@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,6 +53,15 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				elarion: {
+					"dark-purple": "#2A1E40",
+					"royal-purple": "#5D4A90",
+					"mystic-blue": "#394F8A",
+					"parchment": "#F5E6CA",
+					"gold": "#D4AF37",
+					"deep-red": "#8B3E46",
+					"forest-green": "#2C5530"
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -62,6 +72,11 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+			},
+			fontFamily: {
+				'cinzel': ['Cinzel', 'serif'],
+				'lora': ['Lora', 'serif'],
+				'raleway': ['Raleway', 'sans-serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +99,24 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'glow': {
+					'0%, 100%': { 
+						textShadow: '0 0 5px rgba(212, 175, 55, 0.7), 0 0 10px rgba(212, 175, 55, 0.5)'
+					},
+					'50%': { 
+						textShadow: '0 0 15px rgba(212, 175, 55, 0.9), 0 0 20px rgba(212, 175, 55, 0.7)' 
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'glow': 'glow 3s ease-in-out infinite'
+			},
+			backgroundImage: {
+				'parchment': "url('/parchment-texture.jpg')",
+				'map-pattern': "url('/map-pattern.jpg')"
 			}
 		}
 	},
