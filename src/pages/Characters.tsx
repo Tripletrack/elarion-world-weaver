@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Search, Users, Skull, User2, Upload, Plus } from 'lucide-react';
+import { Search, Users, Skull, User2, Upload, Plus, Trash2 } from 'lucide-react';
 import { 
   Dialog, 
   DialogContent, 
@@ -14,6 +14,17 @@ import {
   DialogTitle, 
   DialogTrigger 
 } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { 
@@ -207,6 +218,22 @@ const Characters = () => {
     });
   };
   
+  const deleteCharacter = (id: string) => {
+    setCharacters(prevCharacters => prevCharacters.filter(character => character.id !== id));
+    toast({
+      title: "Character deleted",
+      description: "The character has been removed from your collection",
+    });
+  };
+  
+  const deleteAllCharacters = () => {
+    setCharacters([]);
+    toast({
+      title: "All characters deleted",
+      description: "Your character collection has been cleared",
+    });
+  };
+  
   const filteredCharacters = characters.filter(character => {
     const matchesSearch = character.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           character.race.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -307,202 +334,227 @@ const Characters = () => {
             {filteredCharacters.length === 1 ? ' character' : ' characters'} found
           </h2>
           
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-elarion-royal-purple hover:bg-elarion-royal-purple/90">
-                <Plus className="mr-2 h-4 w-4" /> Add Character
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle className="font-cinzel text-xl">Add New Character</DialogTitle>
-                <DialogDescription>
-                  Create a new character for your Elarion campaign.
-                </DialogDescription>
-              </DialogHeader>
-              
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Character Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Kaelan the Wayfinder" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="race"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Race</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Human, Elf, Half-Orc..." {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="class"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Class</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Spellblade, Wild Mage..." {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="faction"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Faction</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Independent, Circle of the Ancient Bloom..." {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  
-                  <FormField
-                    control={form.control}
-                    name="category"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Category</FormLabel>
-                        <div className="flex flex-wrap gap-2">
-                          {(['heroes', 'villains', 'npcs'] as const).map((category) => (
-                            <Button
-                              key={category}
-                              type="button"
-                              variant={field.value === category ? 'default' : 'outline'}
-                              size="sm"
-                              onClick={() => form.setValue('category', category)}
-                              className={field.value === category ? 
-                                `bg-elarion-${category === 'heroes' ? 'royal-purple' : 
-                                              category === 'villains' ? 'deep-red' : 
-                                              'forest-green'}` : ''}
-                            >
-                              {getCategoryIcon(category as CharacterCategory)} {category}
-                            </Button>
-                          ))}
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <div>
-                    <Label htmlFor="portrait" className="block mb-2">Character Portrait</Label>
-                    <div className="flex items-center gap-4">
-                      <div className="flex-1">
-                        <div className="border-2 border-dashed border-border rounded-md p-4 text-center hover:bg-accent/50 cursor-pointer transition-colors">
-                          <Input 
-                            id="portrait" 
-                            type="file" 
-                            accept="image/*" 
-                            className="hidden"
-                            onChange={handleImageChange}
-                          />
-                          <Label htmlFor="portrait" className="cursor-pointer flex flex-col items-center">
-                            <Upload className="h-8 w-8 mb-2 text-muted-foreground" />
-                            <span className="text-sm font-medium">
-                              {imagePreview ? 'Change image' : 'Upload image'}
-                            </span>
-                            <span className="text-xs text-muted-foreground mt-1">
-                              JPG, PNG or GIF
-                            </span>
-                          </Label>
-                        </div>
-                      </div>
+          <div className="flex gap-2">
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" disabled={characters.length === 0}>
+                  <Trash2 className="mr-2 h-4 w-4" /> Delete All
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action will permanently delete all characters in your collection. 
+                    This action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={deleteAllCharacters} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                    Yes, delete all
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-elarion-royal-purple hover:bg-elarion-royal-purple/90">
+                  <Plus className="mr-2 h-4 w-4" /> Add Character
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="font-cinzel text-xl">Add New Character</DialogTitle>
+                  <DialogDescription>
+                    Create a new character for your Elarion campaign.
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Character Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Kaelan the Wayfinder" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                       
-                      {imagePreview && (
-                        <div className="w-24 h-24 overflow-hidden rounded-md border border-border">
-                          <img 
-                            src={imagePreview} 
-                            alt="Preview" 
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      )}
+                      <FormField
+                        control={form.control}
+                        name="race"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Race</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Human, Elf, Half-Orc..." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="class"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Class</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Spellblade, Wild Mage..." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="faction"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Faction</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Independent, Circle of the Ancient Bloom..." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
-                  </div>
-                  
-                  <FormField
-                    control={form.control}
-                    name="backstory"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Backstory</FormLabel>
-                        <FormControl>
-                          <Textarea 
-                            placeholder="Tell the character's story..." 
-                            className="min-h-[120px]" 
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="locations"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Key Locations</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Thornhollow, Vel'Astra, Blasted Expanse..." 
-                            {...field} 
-                          />
-                        </FormControl>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Separate locations with commas
-                        </p>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <DialogFooter>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={() => setDialogOpen(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button type="submit">Create Character</Button>
-                  </DialogFooter>
-                </form>
-              </Form>
-            </DialogContent>
-          </Dialog>
+                    
+                    <FormField
+                      control={form.control}
+                      name="category"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Category</FormLabel>
+                          <div className="flex flex-wrap gap-2">
+                            {(['heroes', 'villains', 'npcs'] as const).map((category) => (
+                              <Button
+                                key={category}
+                                type="button"
+                                variant={field.value === category ? 'default' : 'outline'}
+                                size="sm"
+                                onClick={() => form.setValue('category', category)}
+                                className={field.value === category ? 
+                                  `bg-elarion-${category === 'heroes' ? 'royal-purple' : 
+                                                category === 'villains' ? 'deep-red' : 
+                                                'forest-green'}` : ''}
+                              >
+                                {getCategoryIcon(category as CharacterCategory)} {category}
+                              </Button>
+                            ))}
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <div>
+                      <Label htmlFor="portrait" className="block mb-2">Character Portrait</Label>
+                      <div className="flex items-center gap-4">
+                        <div className="flex-1">
+                          <div className="border-2 border-dashed border-border rounded-md p-4 text-center hover:bg-accent/50 cursor-pointer transition-colors">
+                            <Input 
+                              id="portrait" 
+                              type="file" 
+                              accept="image/*" 
+                              className="hidden"
+                              onChange={handleImageChange}
+                            />
+                            <Label htmlFor="portrait" className="cursor-pointer flex flex-col items-center">
+                              <Upload className="h-8 w-8 mb-2 text-muted-foreground" />
+                              <span className="text-sm font-medium">
+                                {imagePreview ? 'Change image' : 'Upload image'}
+                              </span>
+                              <span className="text-xs text-muted-foreground mt-1">
+                                JPG, PNG or GIF
+                              </span>
+                            </Label>
+                          </div>
+                        </div>
+                        
+                        {imagePreview && (
+                          <div className="w-24 h-24 overflow-hidden rounded-md border border-border">
+                            <img 
+                              src={imagePreview} 
+                              alt="Preview" 
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <FormField
+                      control={form.control}
+                      name="backstory"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Backstory</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder="Tell the character's story..." 
+                              className="min-h-[120px]" 
+                              {...field} 
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="locations"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Key Locations</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Thornhollow, Vel'Astra, Blasted Expanse..." 
+                              {...field} 
+                            />
+                          </FormControl>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Separate locations with commas
+                          </p>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <DialogFooter>
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        onClick={() => setDialogOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button type="submit">Create Character</Button>
+                    </DialogFooter>
+                  </form>
+                </Form>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCharacters.map((character) => (
             <div key={character.id} className="fantasy-card overflow-hidden group">
-              <div className="relative h-64">
+              <div className="relative h-80">
                 <img 
                   src={character.portrait} 
                   alt={character.name} 
@@ -521,6 +573,14 @@ const Characters = () => {
                   <h3 className="text-xl font-cinzel font-bold text-white mt-1">{character.name}</h3>
                   <p className="text-white/80 text-sm">{character.race} • {character.class}</p>
                 </div>
+                <Button 
+                  variant="destructive" 
+                  size="sm"
+                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={() => deleteCharacter(character.id)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
               
               <div className="p-4">
@@ -530,7 +590,7 @@ const Characters = () => {
                   </p>
                 </div>
                 
-                <p className="text-sm mb-4 line-clamp-3">{character.backstory}</p>
+                <p className="text-sm mb-4 line-clamp-4">{character.backstory}</p>
                 
                 <div>
                   <p className="text-sm font-medium mb-1">Key Locations:</p>
